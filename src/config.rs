@@ -12,6 +12,10 @@ pub struct LoaderConfig {
 pub struct ServerConfig {
     pub connect_addr: String,
     pub json_path: String,
+
+    /// Address to bind Prometheus metrics exporter (e.g. "127.0.0.1:9100")
+    #[serde(default = "default_metrics_addr")]
+    pub metrics_addr: String,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -39,3 +43,6 @@ impl LoaderConfig {
     }
 }
 
+fn default_metrics_addr() -> String {
+    "127.0.0.1:9100".to_string()
+}

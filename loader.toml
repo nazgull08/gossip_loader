@@ -1,9 +1,10 @@
 [server]
 connect_addr = "ws://localhost:9091"
 json_path = "./messages/open_vault.json"
+metrics_addr = "0.0.0.0:9100"
 
 [load]
-clients = 5
-interval_ms = 100
-duration_secs = 10
-pattern = "steady"
+clients = 50
+interval_ms = 3
+duration_secs = 100
+pattern = "ramp-up"
