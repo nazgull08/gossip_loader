@@ -99,7 +99,6 @@ pub async fn run_ws_client(
 
     info!("Client {}: Finished sending. Remaining in passive mode.", client_id);
 
-    // Пассивно принимаем, чтобы не закрывать соединение резко
     while let Some(msg) = read.next().await {
         match msg {
             Ok(_) => {

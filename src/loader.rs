@@ -22,7 +22,7 @@ pub async fn run_loader(config: LoaderConfig) {
     let rps = if elapsed > 0.0 { sent as f64 / elapsed } else { 0.0 };
 
     info!(
-        "📊 Summary: sent {} messages in {:.2} seconds ({:.2} msg/sec)",
+        " Summary: sent {} messages in {:.2} seconds ({:.2} msg/sec)",
         sent, elapsed, rps
     );
 }
@@ -35,7 +35,7 @@ async fn run_steady(config: LoaderConfig, json: Arc<String>, global_sent: Arc<At
         let interval = config.load.interval_ms;
         let global_sent = Arc::clone(&global_sent);
 
-        info!("🚀 Spawning steady WS client {client_id}");
+        info!("Spawning steady WS client {client_id}");
 
         let handle = tokio::spawn(async move {
             run_ws_client(&addr, &json, interval, client_id, config.load.duration_secs, global_sent).await;
@@ -46,7 +46,7 @@ async fn run_steady(config: LoaderConfig, json: Arc<String>, global_sent: Arc<At
     }
 
     sleep(Duration::from_secs(config.load.duration_secs)).await;
-    info!("✅ Steady load complete");
+    info!("Steady load complete");
 }
 
 async fn run_burst(config: LoaderConfig, json: Arc<String>, global_sent: Arc<AtomicU64>) {
@@ -55,14 +55,14 @@ async fn run_burst(config: LoaderConfig, json: Arc<String>, global_sent: Arc<Ato
     let clients = config.load.clients;
     let mut handles = Vec::new();
 
-    info!("🚀 Burst mode: sending {clients} messages at once");
+    info!("Burst mode: sending {clients} messages at once");
 
     for client_id in 0..clients {
         let json = Arc::clone(&json);
         let addr = addr.clone();
         let global_sent = Arc::clone(&global_sent);
 
-        info!("🚀 Spawning burst WS client {client_id}");
+        info!("Spawning burst WS client {client_id}");
 
         let handle = tokio::spawn(async move {
             run_ws_client(&addr, &json, interval, client_id, config.load.duration_secs, global_sent).await;
@@ -72,7 +72,7 @@ async fn run_burst(config: LoaderConfig, json: Arc<String>, global_sent: Arc<Ato
     }
 
     sleep(Duration::from_secs(config.load.duration_secs)).await;
-    info!("✅ Burst load complete");
+    info!("Burst load complete");
 }
 
 async fn run_ramp_up(config: LoaderConfig, json: Arc<String>, global_sent: Arc<AtomicU64>) {
@@ -82,7 +82,7 @@ async fn run_ramp_up(config: LoaderConfig, json: Arc<String>, global_sent: Arc<A
     let duration = config.load.duration_secs;
     let delay_per_client = duration * 1000 / clients as u64;
 
-    info!("🚀 Ramp-up mode: adding {clients} clients every {delay_per_client}ms");
+    info!("Ramp-up mode: adding {clients} clients every {delay_per_client}ms");
 
     let mut handles = Vec::new();
     for client_id in 0..clients {
@@ -91,7 +91,7 @@ async fn run_ramp_up(config: LoaderConfig, json: Arc<String>, global_sent: Arc<A
         let interval = base_interval / 2 + client_id as u64;
         let global_sent = Arc::clone(&global_sent);
 
-        info!("🚀 Spawning ramp-up WS client {client_id} (interval {interval}ms)");
+        info!("Spawning ramp-up WS client {client_id} (interval {interval}ms)");
 
         let handle = tokio::spawn(async move {
             run_ws_client(&addr, &json, interval, client_id, config.load.duration_secs, global_sent).await;
@@ -102,5 +102,5 @@ async fn run_ramp_up(config: LoaderConfig, json: Arc<String>, global_sent: Arc<A
     }
 
     sleep(Duration::from_secs(duration)).await;
-    info!("✅ Ramp-up load complete");
+    info!("Ramp-up load complete");
 }

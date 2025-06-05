@@ -6,5 +6,6 @@ metrics_addr = "0.0.0.0:9100"
 [load]
 clients = 50
 interval_ms = 3
-duration_secs = 100
+duration_secs = 50
 pattern = "ramp-up"
+#pattern = "burst"

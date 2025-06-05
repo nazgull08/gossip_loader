@@ -29,6 +29,7 @@ pkgs.mkShell {
 
     echo "Welcome to the nix-shell dev env"
 
-    RUST_LOG=debug
+#    RUST_LOG=debug cargo run
+    export RUST_LOG=debug
   '';
 }
